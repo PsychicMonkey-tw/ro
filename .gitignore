@@ -1,0 +1,7 @@
+.env
+.env.*
+!.env.example
+config.php
+.DS_Store
+*.log
+/.idea/

@@ -1,0 +1,18 @@
+RewriteEngine On
+
+# Block direct access to sensitive config/env files.
+RewriteRule ^(?:config(?:\.example)?\.php|\.env(?:\.example)?|composer\.(?:json|lock)|phpunit\.xml(?:\.dist)?)$ - [F,L,NC]
+
+# Skip rewrites for existing files/directories.
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Provide root favicon.ico for validators and browsers.
+RewriteRule ^favicon\.ico$ /public/assets/favicon.svg [L,NC]
+
+# Pretty URL for base cards: /baza/slug
+RewriteRule ^baza/([a-z0-9-]+)/?$ /base.php?slug=$1 [L,QSA,NC]
+
+# SEO-friendly sitemap URL.
+RewriteRule ^sitemap\.xml$ /sitemap.php [L]

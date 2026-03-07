@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /admin
+
+Host: xn--80aicaykijbmpq4b9e.xn--p1ai
+Sitemap: https://xn--80aicaykijbmpq4b9e.xn--p1ai/sitemap.xml

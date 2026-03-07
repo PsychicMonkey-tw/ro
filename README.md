@@ -80,15 +80,12 @@
 
 В проект добавлен workflow: `.github/workflows/deploy.yml`.
 
-После каждого `push` в `main` файлы автоматически выкатываются на сервер по SSH через `rsync`.
+После каждого `push` в `main` файлы автоматически выкатываются на хостинг по FTP.
 
 ### Что нужно добавить в GitHub Secrets (Repository → Settings → Secrets and variables → Actions)
 
-- `DEPLOY_HOST` — IP или домен сервера.
-- `DEPLOY_PORT` — SSH-порт (обычно `22`).
-- `DEPLOY_USER` — SSH-пользователь.
-- `DEPLOY_PATH` — путь к папке сайта на сервере (например `/var/www/site`).
-- `DEPLOY_SSH_PRIVATE_KEY` — приватный SSH-ключ для доступа к серверу.
+- `FTP_PASSWORD` — пароль FTP-пользователя `cp368114`.
+- `FTP_SERVER_DIR` — путь к папке сайта на сервере (обычно `/public_html/`).
 
 ### Важно
 

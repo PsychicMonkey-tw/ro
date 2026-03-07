@@ -20,7 +20,7 @@ jobs:
           username: cp368114
           password: ${{ secrets.FTP_PASSWORD }}
           port: 21
-          protocol: ftp
+          protocol: ftps
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
           local-dir: ./
           dangerous-clean-slate: false

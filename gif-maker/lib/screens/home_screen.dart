@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gifcraft/l10n/app_localizations.dart';
 import 'package:gifcraft/models/gif_project.dart';
@@ -45,6 +46,16 @@ class HomeScreen extends StatelessWidget {
             l10n.homeTagline,
             style: Theme.of(context).textTheme.titleMedium,
           ),
+          if (kIsWeb)
+            Card(
+              child: ListTile(
+                leading: const Icon(Icons.public),
+                title: const Text('Web preview'),
+                subtitle: const Text(
+                  'UI works in Safari. Full export needs the iOS/Android app.',
+                ),
+              ),
+            ),
           const SizedBox(height: 8),
           if (!purchase.isFullVersion)
             Card(

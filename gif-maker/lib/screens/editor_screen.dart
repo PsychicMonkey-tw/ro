@@ -1,10 +1,9 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gifcraft/l10n/app_localizations.dart';
 import 'package:gifcraft/models/gif_project.dart';
 import 'package:gifcraft/services/project_service.dart';
 import 'package:gifcraft/services/purchase_service.dart';
+import 'package:gifcraft/widgets/media_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:uuid/uuid.dart';
 
@@ -286,10 +285,7 @@ class _PreviewBackground extends StatelessWidget {
   Widget build(BuildContext context) {
     if (project.sourceType == SourceType.photos &&
         project.mediaPaths.isNotEmpty) {
-      return Image.file(
-        File(project.mediaPaths.first),
-        fit: BoxFit.cover,
-      );
+      return buildMediaImage(project.mediaPaths.first, fit: BoxFit.cover);
     }
     if (project.mediaPaths.isNotEmpty) {
       return Container(

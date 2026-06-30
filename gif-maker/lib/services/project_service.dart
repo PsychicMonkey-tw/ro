@@ -1,28 +1,37 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:path/path.dart' as p;
-import 'package:path_provider/path_provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:uuid/uuid.dart';
 
 import '../models/gif_project.dart';
+import 'project_service_io.dart'
+    if (dart.library.html) 'project_service_web.dart';
 
 class ProjectService extends ChangeNotifier {
   ProjectService();
 
   static const _dbName = 'gifcraft.db';
   static const _table = 'projects';
+  static const _webStorageKey = 'gifcraft_projects';
   final _uuid = const Uuid();
 
   Database? _db;
   List<GifProject> _projects = [];
+  SharedPreferences? _prefs;
 
   List<GifProject> get projects => List.unmodifiable(_projects);
 
   Future<void> init() async {
-    final dir = await getApplicationDocumentsDirectory();
+    if (kIsWeb) {
+      _prefs = await SharedPreferences.getInstance();
+      await reload();
+      return;
+    }
+
+    final dir = await getAppDocumentsDirectory();
     final dbPath = p.join(dir.path, _dbName);
     _db = await openDatabase(
       dbPath,
@@ -41,13 +50,28 @@ class ProjectService extends ChangeNotifier {
   }
 
   Future<void> reload() async {
+    if (kIsWeb) {
+      final raw = _prefs?.getString(_webStorageKey);
+      if (raw == null || raw.isEmpty) {
+        _projects = [];
+      } else {
+        final list = jsonDecode(raw) as List<dynamic>;
+        _projects = list
+            .map((item) => GifProject.fromJson(item as Map<String, dynamic>))
+            .toList();
+      }
+      notifyListeners();
+      return;
+    }
+
     final db = _db;
     if (db == null) return;
 
     final rows = await db.query(_table, orderBy: 'updated_at DESC');
     _projects = rows
         .map((row) {
-          final payload = jsonDecode(row['payload'] as String) as Map<String, dynamic>;
+          final payload =
+              jsonDecode(row['payload'] as String) as Map<String, dynamic>;
           return GifProject.fromJson(payload);
         })
         .toList();
@@ -74,6 +98,22 @@ class ProjectService extends ChangeNotifier {
 
   Future<void> saveProject(GifProject project) async {
     project.updatedAt = DateTime.now();
+
+    if (kIsWeb) {
+      final index = _projects.indexWhere((item) => item.id == project.id);
+      if (index >= 0) {
+        _projects[index] = project;
+      } else {
+        _projects.insert(0, project);
+      }
+      await _prefs?.setString(
+        _webStorageKey,
+        jsonEncode(_projects.map((item) => item.toJson()).toList()),
+      );
+      notifyListeners();
+      return;
+    }
+
     final db = _db;
     if (db == null) return;
 
@@ -90,30 +130,36 @@ class ProjectService extends ChangeNotifier {
   }
 
   Future<void> deleteProject(String id) async {
+    if (kIsWeb) {
+      _projects.removeWhere((item) => item.id == id);
+      await _prefs?.setString(
+        _webStorageKey,
+        jsonEncode(_projects.map((item) => item.toJson()).toList()),
+      );
+      notifyListeners();
+      return;
+    }
+
     final db = _db;
     if (db == null) return;
 
-    final project = _projects.firstWhere((p) => p.id == id);
-    for (final path in project.mediaPaths) {
-      final file = File(path);
-      if (await file.exists()) {
-        await file.delete();
-      }
-    }
+    final project = _projects.firstWhere((item) => item.id == id);
+    await deleteMediaFiles(project.mediaPaths);
 
     await db.delete(_table, where: 'id = ?', whereArgs: [id]);
     await reload();
   }
 
   Future<String> copyMediaToAppDir(String sourcePath) async {
-    final dir = await getApplicationDocumentsDirectory();
-    final mediaDir = Directory(p.join(dir.path, 'media'));
-    if (!await mediaDir.exists()) {
-      await mediaDir.create(recursive: true);
+    if (kIsWeb) {
+      return sourcePath;
     }
+
+    final dir = await getAppDocumentsDirectory();
+    final mediaDir = await ensureMediaDirectory(dir.path);
     final ext = p.extension(sourcePath);
     final dest = p.join(mediaDir.path, '${_uuid.v4()}$ext');
-    await File(sourcePath).copy(dest);
+    await copyMediaFile(sourcePath, dest);
     return dest;
   }
 

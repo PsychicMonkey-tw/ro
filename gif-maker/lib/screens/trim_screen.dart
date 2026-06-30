@@ -1,9 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gifcraft/l10n/app_localizations.dart';
 import 'package:gifcraft/models/gif_project.dart';
 import 'package:gifcraft/services/project_service.dart';
+import 'package:gifcraft/widgets/media_preview.dart';
 import 'package:provider/provider.dart';
 import 'package:video_player/video_player.dart';
 
@@ -38,10 +37,9 @@ class _TrimScreenState extends State<TrimScreen> {
   }
 
   Future<void> _initVideo() async {
-    final controller =
-        VideoPlayerController.file(File(_project.mediaPaths.first));
     try {
-      await controller.initialize();
+      final controller =
+          await createVideoController(_project.mediaPaths.first);
       final durationMs =
           controller.value.duration.inMilliseconds.toDouble();
       if (!mounted) return;
@@ -52,9 +50,7 @@ class _TrimScreenState extends State<TrimScreen> {
           _project.trimEndMs = _maxDurationMs;
         }
       });
-    } catch (_) {
-      await controller.dispose();
-    }
+    } catch (_) {}
   }
 
   @override

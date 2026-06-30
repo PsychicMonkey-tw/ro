@@ -60,11 +60,15 @@ class _AppBootstrapState extends State<AppBootstrap> {
   }
 
   Future<void> _init() async {
-    await Future.wait([
-      _purchaseService.init(),
-      _projectService.init(),
-      _localeService.init(),
-    ]);
+    try {
+      await Future.wait([
+        _purchaseService.init(),
+        _projectService.init(),
+        _localeService.init(),
+      ]).timeout(const Duration(seconds: 10));
+    } catch (_) {
+      // Web or plugin failures should not block UI preview.
+    }
     if (mounted) {
       setState(() => _ready = true);
     }

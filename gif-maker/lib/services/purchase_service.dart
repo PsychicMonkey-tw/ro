@@ -1,9 +1,8 @@
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:in_app_purchase/in_app_purchase.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class PurchaseService extends ChangeNotifier {
   PurchaseService();
@@ -12,7 +11,7 @@ class PurchaseService extends ChangeNotifier {
   static const androidProductId = 'gifcraft_full_unlock';
   static const iosProductId = 'gifcraft_full_unlock';
 
-  final FlutterSecureStorage _storage = const FlutterSecureStorage();
+  SharedPreferences? _prefs;
   final InAppPurchase _iap = InAppPurchase.instance;
 
   bool _isFullVersion = false;
@@ -25,12 +24,23 @@ class PurchaseService extends ChangeNotifier {
   String? get error => _error;
   ProductDetails? get product => _product;
 
-  String get productId =>
-      Platform.isIOS ? iosProductId : androidProductId;
+  String get productId {
+    if (defaultTargetPlatform == TargetPlatform.iOS) {
+      return iosProductId;
+    }
+    return androidProductId;
+  }
 
   Future<void> init() async {
-    final stored = await _storage.read(key: _storageKey);
-    _isFullVersion = stored == 'true';
+    _prefs = await SharedPreferences.getInstance();
+    _isFullVersion = _prefs?.getBool(_storageKey) ?? false;
+
+    if (kIsWeb) {
+      _isFullVersion = true;
+      notifyListeners();
+      return;
+    }
+
     notifyListeners();
 
     if (!await _iap.isAvailable()) {
@@ -50,7 +60,7 @@ class PurchaseService extends ChangeNotifier {
     _error = null;
     if (_isFullVersion) return;
 
-    if (_product == null) {
+    if (kIsWeb || _product == null) {
       await _demoUnlockForDevelopment();
       return;
     }
@@ -63,6 +73,8 @@ class PurchaseService extends ChangeNotifier {
   }
 
   Future<void> restore() async {
+    if (kIsWeb) return;
+
     _isLoading = true;
     _error = null;
     notifyListeners();
@@ -72,7 +84,7 @@ class PurchaseService extends ChangeNotifier {
   }
 
   Future<void> _demoUnlockForDevelopment() async {
-    if (kReleaseMode && _product == null) {
+    if (kReleaseMode && _product == null && !kIsWeb) {
       _error = 'Store product not configured';
       notifyListeners();
       return;
@@ -102,7 +114,7 @@ class PurchaseService extends ChangeNotifier {
 
   Future<void> _setUnlocked(bool value) async {
     _isFullVersion = value;
-    await _storage.write(key: _storageKey, value: value.toString());
+    await _prefs?.setBool(_storageKey, value);
     notifyListeners();
   }
 

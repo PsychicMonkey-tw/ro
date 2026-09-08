@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Карусель — Энергия через питание</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header class="toolbar">
+    <div class="toolbar__brand">
+      <span class="toolbar__dot" aria-hidden="true"></span>
+      <div>
+        <strong>Карусель Instagram</strong>
+        <p>4 слайда · формат 4:5 · готово к скриншоту</p>
+      </div>
+    </div>
+    <nav class="toolbar__nav" aria-label="Слайды">
+      <button type="button" class="nav-btn is-active" data-go="0">1</button>
+      <button type="button" class="nav-btn" data-go="1">2</button>
+      <button type="button" class="nav-btn" data-go="2">3</button>
+      <button type="button" class="nav-btn" data-go="3">4</button>
+    </nav>
+    <p class="toolbar__hint">← → или клик по точкам</p>
+  </header>
+
+  <main class="stage">
+    <button type="button" class="stage__arrow stage__arrow--prev" data-step="-1" aria-label="Предыдущий слайд">‹</button>
+
+    <div class="viewport" id="viewport">
+      <div class="track" id="track">
+
+        <!-- SLIDE 1 -->
+        <article class="slide slide--hero" data-slide="1" aria-label="Слайд 1">
+          <div class="slide__media" aria-hidden="true">
+            <div class="hero-photo">
+              <div class="hero-photo__glow"></div>
+              <div class="hero-photo__scene">
+                <span class="scene-sun"></span>
+                <span class="scene-hill scene-hill--back"></span>
+                <span class="scene-hill scene-hill--mid"></span>
+                <span class="scene-path"></span>
+                <span class="scene-figure"></span>
+              </div>
+              <p class="photo-note">Замените фон своим фото активного дня</p>
+            </div>
+          </div>
+          <div class="slide__veil"></div>
+          <div class="slide__content slide__content--bottom">
+            <p class="eyebrow anim anim-1">Энергия без выгорания</p>
+            <h1 class="headline headline--hero anim anim-2">
+              Как проживать день на&nbsp;100% энергии, успевать по&nbsp;работе, тренироваться и&nbsp;не&nbsp;чувствовать себя выжатым лимоном к&nbsp;6&nbsp;вечера?
+            </h1>
+          </div>
+          <div class="slide__pager" aria-hidden="true"><span></span><i></i><i></i><i></i></div>
+        </article>
+
+        <!-- SLIDE 2 -->
+        <article class="slide slide--pain" data-slide="2" aria-label="Слайд 2">
+          <div class="slide__content">
+            <p class="eyebrow anim anim-1">Знакомо?</p>
+            <div class="chat anim anim-2" role="img" aria-label="Типичное сообщение в директ">
+              <div class="chat__bar">
+                <span class="chat__avatar"></span>
+                <div>
+                  <strong>Сообщение в директ</strong>
+                  <small>сегодня · 14:22</small>
+                </div>
+              </div>
+              <div class="chat__bubble">
+                Сил нет, заменяю обед печеньем, вес растёт…
+              </div>
+              <div class="chat__bubble chat__bubble--reply">
+                С понедельника только салат 🥲
+              </div>
+            </div>
+            <h2 class="headline headline--md anim anim-3">
+              Большинство пытается решить проблему усталости жёсткими ограничениями: «Всё, с&nbsp;понедельника никакого сладкого и&nbsp;только салат!»
+            </h2>
+            <p class="lead anim anim-4">
+              Но это путь к новому срыву и ещё большему стрессу.
+            </p>
+          </div>
+          <div class="slide__pager" aria-hidden="true"><i></i><span></span><i></i><i></i></div>
+        </article>
+
+        <!-- SLIDE 3 -->
+        <article class="slide slide--method" data-slide="3" aria-label="Слайд 3">
+          <div class="method-bg" aria-hidden="true"></div>
+          <div class="slide__content slide__content--center">
+            <p class="eyebrow eyebrow--light anim anim-1">Мой подход</p>
+            <h2 class="headline headline--method anim anim-2">
+              Перенастройка питания через сытость и&nbsp;комфорт
+            </h2>
+            <p class="lead lead--light anim anim-3">
+              Без медицинских вмешательств и горсти таблеток. Мы просто возвращаем телу его естественный ресурс с&nbsp;помощью еды, сна и&nbsp;лёгкого движения.
+            </p>
+            <ul class="pillars anim anim-4">
+              <li>Еда</li>
+              <li>Сон</li>
+              <li>Движение</li>
+            </ul>
+          </div>
+          <div class="slide__pager slide__pager--light" aria-hidden="true"><i></i><i></i><span></span><i></i></div>
+        </article>
+
+        <!-- SLIDE 4 -->
+        <article class="slide slide--cta" data-slide="4" aria-label="Слайд 4">
+          <div class="slide__content">
+            <p class="eyebrow anim anim-1">Открытый набор</p>
+            <h2 class="headline headline--md anim anim-2">
+              5 бесплатных 15‑минутных диагностик рациона на&nbsp;этой неделе
+            </h2>
+            <p class="lead anim anim-3">
+              Разберём вашу проблему с энергией или весом и наметим план. Я выделю время в графике специально для этого.
+            </p>
+
+            <div class="cta-card anim anim-4">
+              <p class="cta-card__label">Чтобы занять место</p>
+              <p class="cta-card__action">
+                Пишите в директ слово
+                <strong class="keyword">ЭНЕРГИЯ</strong>
+              </p>
+              <button type="button" class="cta-window" tabindex="-1">
+                <span class="cta-window__icon" aria-hidden="true">↓</span>
+                <span>Жмите на окошко ниже</span>
+              </button>
+            </div>
+          </div>
+          <div class="slide__pager" aria-hidden="true"><i></i><i></i><i></i><span></span></div>
+        </article>
+
+      </div>
+    </div>
+
+    <button type="button" class="stage__arrow stage__arrow--next" data-step="1" aria-label="Следующий слайд">›</button>
+  </main>
+
+  <footer class="export-note">
+    <p>Для публикации: откройте каждый слайд на полный экран и сделайте скриншот области <code>.slide</code> (1080×1350). Своё фото — на слайд&nbsp;1 в блок <code>.hero-photo</code>.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

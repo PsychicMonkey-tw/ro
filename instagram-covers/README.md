@@ -1,13 +1,13 @@
-# Instagram covers — 5 дней
+# Instagram covers (клиентские)
 
-| День | Тема | Пост | Stories |
-|------|------|------|---------|
-| 1 | Узнавание: нет сил к вечеру | posts/day1-post-cover.png | stories/day1-story-cover.png |
-| 2 | Ошибка запретов | posts/day2-post-cover.png | stories/day2-story-cover.png |
-| 3 | Подход: сытость и ресурс | posts/day3-post-cover.png | stories/day3-story-cover.png |
-| 4 | Мостик к разбору | posts/day4-post-cover.png | stories/day4-story-cover.png |
-| 5 | Оффер: ЭНЕРГИЯ | posts/day5-post-cover.png | stories/day5-story-cover.png |
+Без внутренних меток «день» / «прогрев». Нумерация только в вашем плане публикаций.
 
-Размеры: посты 1080×1350 (4:5), сторис 1080×1920 (9:16).
+| Порядок автора | Тема | Пост 1080×1350 | Stories 1080×1920 |
+|---|---|---|---|
+| 1 | Сигнал усталости | posts/cover-signal.png | stories/cover-signal.png |
+| 2 | Запреты не дают энергию | posts/cover-restrictions.png | stories/cover-restrictions.png |
+| 3 | Осознанное питание | posts/cover-approach.png | stories/cover-approach.png |
+| 4 | Короткий разбор | posts/cover-consult.png | stories/cover-consult.png |
+| 5 | CTA ЭНЕРГИЯ | posts/cover-cta.png | stories/cover-cta.png |
 
-Тексты постов: ../instagram-warmup-posts.md
+Тексты: ../instagram-warmup-posts.md
